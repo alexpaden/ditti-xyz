@@ -1,14 +1,14 @@
 // app/api/v1/history/profile/[fid].ts
 
 import { NextRequest, NextResponse } from "next/server";
-import { getProfileByFid } from "./service";
+import { getProfilesByFid } from "./service";
 
 export async function GET(request: NextRequest, { params }) {
   //console.log(request);
   const { fid } = params; // Updated line
-  const profile = await getProfileByFid(fid);
-  if (profile) {
-    return NextResponse.json({ profile });
+  const profiles = await getProfilesByFid(fid);
+  if (profiles) {
+    return NextResponse.json({ profiles });
   } else {
     return NextResponse.json({
       status: 404,

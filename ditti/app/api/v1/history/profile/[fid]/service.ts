@@ -1,8 +1,8 @@
 // app/api/v1/history/profile/service.ts
 import prisma from "../../../../../../prisma/prismaClient";
 
-export async function getProfileByFid(fid: string) {
-  const profile = await prisma.profile_trackers.findMany({
+export async function getProfilesByFid(fid: string) {
+  const profiles = await prisma.profile_trackers.findMany({
     where: { fid: parseInt(fid, 10) },
     select: {
       id: true,
@@ -13,6 +13,9 @@ export async function getProfileByFid(fid: string) {
       follower_count: true,
       pfp_url: true,
     },
+    orderBy: {
+      id: "asc", // or 'desc' for descending order
+    },
   });
-  return profile;
+  return profiles;
 }
