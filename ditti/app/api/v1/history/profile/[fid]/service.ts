@@ -1,8 +1,8 @@
 // app/api/v1/history/profile/service.ts
-import prisma from "../../../../../../prisma/prismaClient";
+import { cmsClient } from "../../../../../../prisma/prismaClient";
 
 export async function getProfilesByFid(fid: string) {
-  const profiles = await prisma.profile_trackers.findMany({
+  const profiles = await cmsClient.profile_trackers.findMany({
     where: { fid: parseInt(fid, 10) },
     select: {
       id: true,

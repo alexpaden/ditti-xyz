@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client1"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("INDEXER_SUPABASE_URI")
+}
+
+model casts {
+  hash                                     String   @id
+  thread_hash                              String
+  parent_hash                              String?
+  author_fid                               BigInt
+  author_username                          String?
+  author_display_name                      String?
+  author_pfp_url                           String?
+  author_pfp_verified                      Boolean?
+  text                                     String
+  published_at                             DateTime @db.Timestamptz(6)
+  mentions                                 Json?
+  replies_count                            Int?
+  reactions_count                          Int?
+  recasts_count                            Int?
+  watches_count                            Int?
+  deleted                                  Boolean? @default(false)
+  parent_author_fid                        BigInt?
+  parent_author_username                   String?
+  hash_v1                                  String?
+  parent_hash_v1                           String?
+  thread_hash_v1                           String?
+  profile_casts_author_fidToprofile        profile  @relation("casts_author_fidToprofile", fields: [author_fid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profile_casts_parent_author_fidToprofile profile? @relation("casts_parent_author_fidToprofile", fields: [parent_author_fid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model profile {
+  id                                     BigInt         @id(map: "profiles_pkey")
+  owner                                  String?
+  username                               String?
+  display_name                           String?
+  avatar_url                             String?
+  avatar_verified                        Boolean?
+  followers                              BigInt?
+  following                              BigInt?
+  bio                                    String?
+  referrer                               String?
+  registered_at                          DateTime?      @db.Timestamptz(6)
+  updated_at                             DateTime?      @default(now()) @db.Timestamptz(6)
+  casts_casts_author_fidToprofile        casts[] @relation("casts_author_fidToprofile")
+  casts_casts_parent_author_fidToprofile casts[] @relation("casts_parent_author_fidToprofile")
+  verification                           verification[]
+}
+
+model verification {
+  fid        BigInt
+  address    String
+  created_at DateTime? @db.Timestamptz(6)
+  profile    profile   @relation(fields: [fid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "verifications_fid_fkey")
+
+  @@id([fid, address], map: "verifications_pkey")
+}
