@@ -1,12 +1,15 @@
 // app/api/v1/history/profile/[fid].ts
 
 import { NextRequest, NextResponse } from "next/server";
+import { getFarcasterProfilesByFids, getRecentChangesByFid } from "./service";
 
 export async function GET(request: NextRequest, { params }) {
   //console.log(request);
   const { fid } = params; // Updated line
+  const trackingEntries = await getRecentChangesByFid(fid);
+  console.log("entries are ", trackingEntries[0]);
   if (fid) {
-    return NextResponse.json({ fid });
+    return NextResponse.json(fid);
   } else {
     return NextResponse.json({
       status: 404,
