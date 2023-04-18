@@ -8,7 +8,7 @@ export async function getRemovedFollowersByFid(fid: string) {
     .select("id, fid, created_at, removed")
     .eq("fid", parseInt(fid, 10))
     .neq("removed", "[]")
-    .order("id", { ascending: true });
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Error fetching profiles:", error);
