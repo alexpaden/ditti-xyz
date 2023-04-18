@@ -1,114 +1,34 @@
 "use client";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import UnfollowerRow from "../../components/UnfollowerRow";
 
-type Profile = {
-  id: number;
-  username: string | null;
-  display_name: string | null;
-  bio: string | null;
-  following_count: number | null;
-  follower_count: number | null;
-  pfp_url: string | null;
-};
-
-type ApiResponse = {
-  profiles: Profile[];
-};
-
-export default function ProfilePage({ params }) {
-  const [profiles, setProfiles] = useState<Profile[]>([]);
+export default function WhoUnfollowedMePage({ params }) {
+  const [unfollowerData, setUnfollowerData] = useState([]);
 
   useEffect(() => {
-    async function fetchProfiles() {
-      const res = await fetch(
-        `http://localhost:3000/api/v1/history/profile/${params.fid}}`
+    async function fetchUnfollowers() {
+      const response = await fetch(
+        `http://localhost:3000/api/history/${params.fid}/follower/removed`
       );
-      const { profiles } = await res.json();
-      setProfiles(profiles);
+      const data = await response.json();
+
+      setUnfollowerData(data);
     }
 
-    fetchProfiles();
+    fetchUnfollowers();
   }, []);
 
   return (
-    <Container>
-      <h1>Profile Page</h1>
-      <ProfileList>
-        {profiles.map((profile) => (
-          <ProfileRow key={profile.id}>
-            {profile.pfp_url && (
-              <ProfileImage src={profile.pfp_url} alt="Profile Picture" />
-            )}
-            <ProfileDetails>
-              <ProfileName>@{profile.username}</ProfileName>
-              <ProfileBio>"{profile.bio}"</ProfileBio>
-              <ProfileFollowers>
-                {profile.follower_count} Followers
-              </ProfileFollowers>
-              <ProfileFollowing>
-                {profile.following_count} Following
-              </ProfileFollowing>
-            </ProfileDetails>
-          </ProfileRow>
-        ))}
-      </ProfileList>
-    </Container>
+    <div>
+      <h1>Who Unfollowed Me</h1>
+      {unfollowerData.map(({ id, created_at, removed }) => (
+        <div key={id}>
+          <h2>{new Date(created_at).toLocaleString()}</h2>
+          {removed.map((user) => (
+            <UnfollowerRow key={user.id} user={user} />
+          ))}
+        </div>
+      ))}
+    </div>
   );
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const ProfileName = styled.p`
-  color: black;
-  font-weight: bold;
-`;
-
-const ProfileBio = styled.p`
-  color: black;
-  font-style: italic;
-`;
-
-const ProfileFollowers = styled.p`
-  color: black;
-  font-size: 0.75rem;
-`;
-
-const ProfileFollowing = styled.p`
-  color: black;
-  font-size: 0.75rem;
-`;
-
-const ProfileList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-`;
-
-const ProfileRow = styled.li`
-  display: flex;
-  align-items: center;
-  height: 150px;
-  width: 60%;
-  margin: 10px;
-  padding: 10px;
-  background-color: #f1f1f1;
-  border-radius: 10px;
-`;
-
-const ProfileImage = styled.img`
-  height: 100%;
-  margin-right: 10px;
-  border-radius: 50%;
-`;
-
-const ProfileDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-grow: 1;
-`;

@@ -27,12 +27,8 @@ export async function getRemovedFollowersByFid(fid: string) {
 
 async function getFarcasterProfilesByFids(fids: number[]) {
   console.log("uniqueFids is here ", fids);
-  const indexerClient2 = createClient(
-    process.env.INDEXER_DB_URL!,
-    process.env.INDEXER_DB_API_KEY!
-  );
 
-  const { data, error } = await indexerClient2
+  const { data, error } = await indexerClient
     .from("profile")
     .select("*")
     .in("id", fids);
