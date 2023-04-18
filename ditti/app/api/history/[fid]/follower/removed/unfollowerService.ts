@@ -1,6 +1,5 @@
 // app/api/v1/history/profile/service.ts
 import { cmsClient, indexerClient } from "@/app/database";
-import { SupabaseClient, createClient } from "@supabase/supabase-js";
 
 export async function getRemovedFollowersByFid(fid: string) {
   const { data, error } = await cmsClient

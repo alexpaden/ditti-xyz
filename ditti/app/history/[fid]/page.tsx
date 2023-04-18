@@ -8,7 +8,7 @@ export default function WhoUnfollowedMePage({ params }) {
   useEffect(() => {
     async function fetchUnfollowers() {
       const response = await fetch(
-        `http://localhost:3000/api/history/${params.fid}/follower/removed`
+        `/api/history/${params.fid}/follower/removed`
       );
       const data = await response.json();
 
