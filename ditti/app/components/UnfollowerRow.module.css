@@ -1,0 +1,43 @@
+.row {
+  display: flex;
+  align-items: center;
+  width: 600px;
+  height: 150px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.userInfo {
+  margin-left: 20px;
+}
+
+.displayName {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.username {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.stats {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.bio {
+  font-size: 14px;
+}

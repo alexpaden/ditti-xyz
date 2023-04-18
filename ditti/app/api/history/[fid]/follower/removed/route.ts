@@ -4,10 +4,10 @@ import { getRemovedFollowersByFid } from "./unfollowerService";
 export async function GET(request: NextRequest, { params }) {
   //console.log(request);
   const { fid } = params; // Updated line
-  const fids = await getRemovedFollowersByFid(fid);
-  console.log(fids);
+  const unfollowers = await getRemovedFollowersByFid(fid);
+  console.log(unfollowers);
   if (fid) {
-    return NextResponse.json({ fids });
+    return NextResponse.json(unfollowers);
   } else {
     return NextResponse.json({
       status: 404,
