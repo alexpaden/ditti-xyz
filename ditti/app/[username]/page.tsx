@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import UnfollowerRow from '../../components/UnfollowerRow';
+import UnfollowerRow from '../components/UnfollowerRow';
 
 export default function WhoUnfollowedMePage({ params }) {
   const [unfollowerData, setUnfollowerData] = useState([]);
@@ -10,9 +10,10 @@ export default function WhoUnfollowedMePage({ params }) {
 
   useEffect(() => {
     async function fetchUnfollowers() {
-      const response = await fetch(
-        `/api/history/${params.fid}/follower/removed`
-      );
+      const res = await fetch(`/api/user/${params.username}`);
+      const user = await res.json();
+
+      const response = await fetch(`/api/history/${user}/follower/removed`);
       const data = await response.json();
 
       setUnfollowerData(data);
@@ -28,9 +29,8 @@ export default function WhoUnfollowedMePage({ params }) {
   const redirectToNewPage = async () => {
     try {
       // Convert username to fid
-      const response = await fetch(`/api/user/${username}`);
-      const data = await response.json();
-      router.push(`/history/${data}`);
+
+      router.push(`/${username}`);
     } catch (error) {
       console.error(error);
       console.log('User not found');
