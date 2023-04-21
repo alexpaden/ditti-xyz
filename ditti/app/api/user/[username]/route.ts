@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getRemovedFollowersByFid } from './unfollowerService';
+import { warpClient } from '@/app/database';
 
 export async function GET(request: NextRequest, { params }) {
-  const { fid } = params;
-  const unfollowers = await getRemovedFollowersByFid(fid);
-  if (fid) {
-    return NextResponse.json(unfollowers);
+  //console.log(request);
+  const { username } = params; // Updated line
+  const user = await warpClient.lookupUserByUsername(username);
+  if (user) {
+    const fid = user.fid;
+    return NextResponse.json(fid);
   } else {
     return NextResponse.json({
       status: 404,
