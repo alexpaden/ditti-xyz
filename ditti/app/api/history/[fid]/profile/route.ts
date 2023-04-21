@@ -1,7 +1,5 @@
-// app/api/v1/history/profile/[fid].ts
-
-import { NextRequest, NextResponse } from "next/server";
-import { getProfilesByFid } from "./service";
+import { NextRequest, NextResponse } from 'next/server';
+import { getProfilesByFid } from './service';
 
 export async function GET(request: NextRequest, { params }) {
   //console.log(request);
@@ -12,8 +10,8 @@ export async function GET(request: NextRequest, { params }) {
   } else {
     return NextResponse.json({
       status: 404,
-      error: "Not Found",
-      message: "The requested resource could not be found on this server.",
+      error: 'Not Found',
+      message: 'The requested resource could not be found on this server.',
     });
   }
 }

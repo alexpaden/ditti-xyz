@@ -1,11 +1,11 @@
-import { cmsClient, warpClient } from "@/app/database";
+import { cmsClient, warpClient } from '@/app/database';
 
 export async function getRecentFollowerEntries(fid: string) {
   const { data, error } = await cmsClient
-    .from("follower_trackers")
-    .select("id, added, removed")
-    .eq("fid", parseInt(fid, 10))
-    .order("id", { ascending: false });
+    .from('follower_trackers')
+    .select('id, added, removed')
+    .eq('fid', parseInt(fid, 10))
+    .order('id', { ascending: false });
 
   if (error)
     throw new Error(
@@ -26,10 +26,10 @@ export async function newTrackerRequest(fid: string) {
 
 async function getFollowerChanges(fid: string) {
   const { data, error } = await cmsClient
-    .from("audience_trackers")
-    .select("followers, following")
-    .eq("fid", parseInt(fid, 10))
-    .order("id", { ascending: false });
+    .from('audience_trackers')
+    .select('followers, following')
+    .eq('fid', parseInt(fid, 10))
+    .order('id', { ascending: false });
 
   if (error) throw new Error(`Error fetching profiles: ${error.message}`);
 
@@ -54,7 +54,7 @@ function compareArrays(arr1, arr2) {
 
 async function postNewFollowerTracker(fid, changes) {
   const { data, error } = await cmsClient
-    .from("follower_trackers")
+    .from('follower_trackers')
     .insert([{ fid, added: changes.added, removed: changes.removed }]);
 
   if (error)
@@ -77,9 +77,9 @@ async function updateAudienceTrackerFollowLists(fid: string) {
   }
 
   const { data, error } = await cmsClient
-    .from("audience_trackers")
+    .from('audience_trackers')
     .update([{ fid, followers: followerFids, following: followingFids }])
-    .eq("fid", fid);
+    .eq('fid', fid);
 
   if (error)
     throw new Error(
@@ -91,16 +91,16 @@ async function createProfileTrackerEntry(fid: string) {
   const currentProfile = await warpClient.lookupUserByFid(parseInt(fid, 10));
 
   const lastProfile = await cmsClient
-    .from("profile_trackers")
+    .from('profile_trackers')
     .select(
-      "username, display_name, bio, pfp_url, follower_count, following_count"
+      'username, display_name, bio, pfp_url, follower_count, following_count'
     )
-    .eq("fid", fid)
-    .order("id", { ascending: false })
+    .eq('fid', fid)
+    .order('id', { ascending: false })
     .limit(1);
 
   if (hasProfileChanged(currentProfile, lastProfile.data![0])) {
-    const { data, error } = await cmsClient.from("profile_trackers").insert([
+    const { data, error } = await cmsClient.from('profile_trackers').insert([
       {
         fid,
         username: currentProfile.username,

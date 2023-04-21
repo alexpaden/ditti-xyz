@@ -1,16 +1,15 @@
-// app/api/v1/history/profile/service.ts
-import { cmsClient, indexerClient } from "@/app/database";
+import { cmsClient, indexerClient } from '@/app/database';
 
 export async function getRemovedFollowersByFid(fid: string) {
   const { data, error } = await cmsClient
-    .from("follower_trackers")
-    .select("id, fid, created_at, removed")
-    .eq("fid", parseInt(fid, 10))
-    .neq("removed", "[]")
-    .order("created_at", { ascending: false });
+    .from('follower_trackers')
+    .select('id, fid, created_at, removed')
+    .eq('fid', parseInt(fid, 10))
+    .neq('removed', '[]')
+    .order('created_at', { ascending: false });
 
   if (error) {
-    console.error("Error fetching profiles:", error);
+    console.error('Error fetching profiles:', error);
     throw error;
   }
 
@@ -25,15 +24,15 @@ export async function getRemovedFollowersByFid(fid: string) {
 }
 
 async function getFarcasterProfilesByFids(fids: number[]) {
-  console.log("uniqueFids is here ", fids);
+  console.log('uniqueFids is here ', fids);
 
   const { data, error } = await indexerClient
-    .from("profile")
-    .select("*")
-    .in("id", fids);
+    .from('profile')
+    .select('*')
+    .in('id', fids);
 
   if (error) {
-    console.error("Error fetching profiles:", error);
+    console.error('Error fetching profiles:', error);
     throw error;
   }
 

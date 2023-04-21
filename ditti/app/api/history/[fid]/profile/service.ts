@@ -1,17 +1,16 @@
-// app/api/v1/history/profile/service.ts
-import { cmsClient } from "@/app/database";
+import { cmsClient } from '@/app/database';
 
 export async function getProfilesByFid(fid: string) {
   const { data, error } = await cmsClient
-    .from("profile_trackers")
+    .from('profile_trackers')
     .select(
-      "id, username, display_name, bio, following_count, follower_count, pfp_url"
+      'id, username, display_name, bio, following_count, follower_count, pfp_url'
     )
-    .eq("fid", parseInt(fid, 10))
-    .order("id", { ascending: true });
+    .eq('fid', parseInt(fid, 10))
+    .order('id', { ascending: true });
 
   if (error) {
-    console.error("Error fetching profiles:", error);
+    console.error('Error fetching profiles:', error);
     throw error;
   }
 
